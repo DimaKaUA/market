@@ -1,0 +1,49 @@
+{% extends template %}
+
+{% block body %}
+
+<div class="row">
+    <div class="col-sm-2" >
+        <h4>Categories</h4>
+        <table class="table table-hover table-stripped">
+            <tbody>
+            {% for category in data.categories %}
+                <tr>
+                    <td><a href="{{ category.name }}">{{ category.name }}</a></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="col-sm-8" >
+        <h4>Item list</h4>
+        <table class="table table-hover table-stripped">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Price</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for item in data.itemsOfCategory %}
+                <tr>
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.description }}</td>
+                    <td>{{ item.price }}</td>
+                    <td>
+                        <a class="btn btn-outline-primary" href="items/take/{{ item.id }}">Take</a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="col-sm-2" >
+    </div>
+</div>
+
+
+    
+{% endblock %}

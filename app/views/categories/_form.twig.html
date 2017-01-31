@@ -1,0 +1,10 @@
+{% if data.error %}
+    <div>{{ data.error }}</div>
+{% endif %}
+
+<div class="form-group">
+    <label class="control-label required" for="name">Name of category</label>
+    <input class="form-control" type="text" id="name" name="name" value="{{ data.name }}" required="required" />
+</div>
+
+<input type="submit" id="_submit" name="_submit" value="Store" class="btn btn-primary"/>

@@ -1,0 +1,15 @@
+{% extends template %}
+
+{% block body %}
+    <h1>Category creation</h1>
+
+    <form action="/categories/create" method="POST" class="form">
+        {% include 'categories/_form.twig.html' %}
+    </form>
+    <br>
+    <ul class="list-inline">
+        <li>
+            <a href="/categories">Back to the list</a>
+        </li>
+    </ul>
+{% endblock %}

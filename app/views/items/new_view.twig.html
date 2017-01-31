@@ -1,0 +1,15 @@
+{% extends template %}
+
+{% block body %}
+    <h1>Item creation</h1>
+
+    <form action="/items/create" method="POST" class="form">
+        {% include 'items/_form.twig.html' %}
+    </form>
+    <br>
+    <ul class="list-inline">
+        <li>
+            <a href="/items">Back to the list</a>
+        </li>
+    </ul>
+{% endblock %}

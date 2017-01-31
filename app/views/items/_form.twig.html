@@ -1,0 +1,26 @@
+{% if data.error %}
+    <div>{{ data.error }}</div>
+{% endif %}
+
+<div class="form-group">
+    <label class="control-label required" for="name">Name of item</label>
+    <input class="form-control" type="text" id="name" name="name" value="{{ data.item.name }}" required="required" />
+</div>
+<div class="form-group">
+    <label class="control-label required" for="name">Category of item</label>
+    <select class="form-control" name="category_name" id="name" required="required">
+    {% for name in data.categories %}
+        <option>{{ name.name }}</option>  
+    {% endfor %}
+    </select>
+</div>
+<div class="form-group">
+    <label class="control-label required" for="name">Description of item</label>
+    <input class="form-control" type="text" id="name" name="description" value="{{ data.item.description }}" required="required" />
+</div>
+<div class="form-group">
+    <label class="control-label required" for="name">Price of item</label>
+    <input class="form-control" type="text" id="name" name="price" value="{{ data.item.price }}" required="required" />
+</div>
+
+<input type="submit" id="_submit" name="_submit" value="Store" class="btn btn-primary"/>

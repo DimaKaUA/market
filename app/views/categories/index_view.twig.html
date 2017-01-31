@@ -1,0 +1,27 @@
+{% extends template %}
+
+{% block body %}
+    <h1>Category list</h1>
+
+    <table class="table table-hover table-stripped">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for category in data %}
+            <tr>
+                <td>{{ category.name }}</td>
+                <td>
+                    <a class="btn btn-outline-primary" href="categories/{{ category.id }}">show</a>
+
+                    <a class="btn btn-outline-primary" href="categories/{{ category.id }}/edit">edit</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <a href="categories/new">Create a new category</a>
+{% endblock %}

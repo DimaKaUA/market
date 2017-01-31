@@ -1,0 +1,26 @@
+{% extends template %}
+
+{% block body %}
+    <h1>Category</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Name</th>
+                <td>{{ data.name }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul class="list-inline">
+        <li>
+            <a href="/categories">Back to the list</a>
+        </li>
+        <li>
+        	<a href="/categories/{{ data.id }}/edit">Edit</a>
+        </li>
+        <li>
+        	<a href="/categories/{{ data.id }}/destroy">Delete</a>
+        </li>
+    </ul>
+{% endblock %}
