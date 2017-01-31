@@ -5,7 +5,6 @@
 */
 class Item extends Model
 {
-	
     protected static $tablename = "items";
 
     /**

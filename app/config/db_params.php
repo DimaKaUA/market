@@ -1,7 +1,7 @@
 <?php 
 
 return array(
-	'dsn'      => 'mysql:dbname=market;host=localhost', 
+    'dsn'      => 'mysql:dbname=market;host=localhost', 
     'user'     => 'root', 
     'password' => '30061504', 
     'opt'      => [
