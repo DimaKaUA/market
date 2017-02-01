@@ -9,7 +9,7 @@ class Item extends Model
 
     /**
     * Adds record to DB
-    * 
+    * @param array $args <p>Array with column values</p>
     * @return boolean 
     */   
     public function addRecord(array $args)
@@ -36,7 +36,7 @@ class Item extends Model
  
     /**
     * Edits record to DB
-    * 
+    * @param array $args <p>Array with column values</p>
     * @return boolean
     */    
     public function editRecord(array $args)
@@ -48,8 +48,8 @@ class Item extends Model
                                  WHERE id=:id'
                                  );
         $sql->execute(array(
-                          'id'      => $args['id'],
-                          'name'    => $args['name'], 
+                          'id'          => $args['id'],
+                          'name'        => $args['name'], 
                           'category_id' => $args['category_id'],
                           'description' => $args['description'],
                           'price'       => $args['price'],
@@ -106,4 +106,30 @@ class Item extends Model
         }
         return $list;
     }   
+
+    /**
+     * Selects list of items with specified IDs
+     * @param array $idsArray <p>Array with IDs</p>
+     * @return array <p>Array with item list</p>
+     */
+    public static function getListByIds($idsArray)
+    {
+        // Convert array to string for constructing statement in sql-query
+        $idsString = implode(',', $idsArray);
+        // Query text to DB
+        $sql = $db->prepare(
+                             'SELECT *
+                              FROM ' . static::$tablename . 
+                             ' WHERE id IN (?)'
+                              );
+
+        $sql->execute([$idsString]);
+
+        $list = array();
+
+        while($row = $sql->fetch()) {
+            $list[] = $row;
+        }
+        return $list;
+    }
 }

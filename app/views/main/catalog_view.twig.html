@@ -4,20 +4,21 @@
 
 <div class="row">
     <div class="col-sm-2" >
-        <h4>Categories</h4>
-        <table class="table table-hover table-stripped">
-            <tbody>
-            {% for category in data.categories %}
-                <tr>
-                    <td><a href="{{ category.name }}">{{ category.name }}</a></td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
+        <h4>Catalog</h4>
+        <ul class="nav">
+        {% for category in data.categories %}
+            <li class="nav-item">
+                <a href="{{ category.name|lower }}" class="nav-link"
+                    {% if category.id == data.requestedCategoryId %}
+                        style="color: green" 
+                    {% endif %} >
+                    {{ category.name }}</a>
+            </li>
+        {% endfor %}    
+        </ul>
     </div>
     <div class="col-sm-8" >
-        <h4>Item list</h4>
-        <table class="table table-hover table-stripped">
+        <table class="table table-hover">
             <thead>
                 <tr>
                     <th>Name</th>
@@ -33,7 +34,7 @@
                     <td>{{ item.description }}</td>
                     <td>{{ item.price }}</td>
                     <td>
-                        <a class="btn btn-outline-primary" href="items/take/{{ item.id }}">Take</a>
+                        <a class="btn btn-success btn-xs" href="cart/add/{{ item.id }}">Add</a>
                     </td>
                 </tr>
             {% endfor %}
@@ -44,6 +45,4 @@
     </div>
 </div>
 
-
-    
 {% endblock %}

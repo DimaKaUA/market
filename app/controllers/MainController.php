@@ -37,16 +37,13 @@ class MainController extends Controller {
 
         $requestedCategory = $categoryModel->getRecordByName($categoryName);
 
-
         $itemModel = new Item();
         $itemsOfCategory = $itemModel->getRecordByCategoryId($requestedCategory['id']);
         
-
-
-
         $this->view->generate('main/catalog_view.twig.html', [
-                'itemsOfCategory'  => $itemsOfCategory,
-                'categories'       => $categories,
+                'itemsOfCategory'     => $itemsOfCategory,
+                'categories'          => $categories,
+                'requestedCategoryId' => $requestedCategory['id'],
         ]);
 
         return true;

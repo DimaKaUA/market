@@ -39,7 +39,7 @@ class Category extends Model
         $sql = $this->db->prepare(
                                 'UPDATE LOW_PRIORITY IGNORE ' . static::$tablename . 
                                 ' SET name=:name
-                                WHERE id=:id'
+                                  WHERE id=:id'
                                  );
         $sql->execute(array(
                           'id'      => $args['id'],
