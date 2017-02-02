@@ -3,8 +3,7 @@
 /**
 * 
 */
-class Category extends Model
-{
+class Category extends Model {
     protected static $tablename = "categories";
 
     /**

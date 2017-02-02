@@ -2,7 +2,11 @@
 
 include_once ROOT . '/models/Item.php';
 include_once ROOT . '/models/Category.php';
+include_once ROOT . '/controllers/AuthController.php';
 
+/**
+ * Class ItemController
+ */
 class ItemController extends Controller {
 
     public function __construct()
@@ -17,6 +21,9 @@ class ItemController extends Controller {
      */
     public function indexAction()
     {
+
+        AuthController::checkAuth();
+
         $itemModel = new Item();
         $allItems = $itemModel->getListWithCategoryName();
 
@@ -31,6 +38,9 @@ class ItemController extends Controller {
      */
     public function showAction($id)
     {
+
+        AuthController::checkAuth();
+
         if ($id) {
             $itemModel = new Item();
             $item = $itemModel->getRecordById($id);
@@ -55,6 +65,9 @@ class ItemController extends Controller {
      */
     public function newAction()
     {
+
+        AuthController::checkAuth();
+
         $categoryModel = new Category();
         $categories = $categoryModel->getList();
         $this->view->generate('items/new_view.twig.html', [
@@ -70,6 +83,9 @@ class ItemController extends Controller {
      */
     public function editAction($id)
     {
+
+        AuthController::checkAuth();
+
         if ($id) {
 
             $itemModel = new Item();
@@ -97,6 +113,9 @@ class ItemController extends Controller {
      */
     public function createAction()
     {
+
+        AuthController::checkAuth();
+
         if($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $categoryModel = new Category();
@@ -162,6 +181,9 @@ class ItemController extends Controller {
      */
     public function updateAction($id)
     {
+
+        AuthController::checkAuth();
+
         if($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $categoryModel = new Category();
@@ -232,6 +254,9 @@ class ItemController extends Controller {
      */
     public function destroyAction($id)
     {
+
+        AuthController::checkAuth();
+
         if ($id) {
             $itemModel = new Item();
             $itemModel->deleteRecord($id);

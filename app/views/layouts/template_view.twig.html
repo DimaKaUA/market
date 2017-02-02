@@ -12,21 +12,20 @@
             <ul class="nav navbar-nav">
             <li>
                 <a href="/">Site</a>
-            </li>
-        {% block header_links %}
-        {% if not app.user %}
+            </li>    
             <li class="nav-item">
-                <a href="/register">Register</a>
+                <a href="/orders">Orders</a>
             </li>
             <li class="nav-item">
-                <a href="/login">Login</a>
+                <a href="/categories">Categories</a>
             </li>
-        {% else %}
             <li class="nav-item">
-                <a href="/logout">Logout</a>
+                <a href="/items">Items</a>
             </li>
-        {% endif %}
-        {% endblock %}
+             
+            <li>
+                <a href="/cart">Cart</a>
+            </li>
             </ul>
         </nav>
 

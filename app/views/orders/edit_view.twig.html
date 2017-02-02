@@ -1,0 +1,15 @@
+{% extends template %}
+
+{% block body %}
+    <h1>Order edit</h1>
+    
+    <form action="/orders/{{ data.order.id }}/update" method="POST" class="form">
+        {% include 'orders/_form.twig.html' %}
+    </form>
+    <br>
+    <ul class="list-inline">
+        <li>
+            <a href="/orders">Back to the list</a>
+        </li>
+    </ul>
+{% endblock %}

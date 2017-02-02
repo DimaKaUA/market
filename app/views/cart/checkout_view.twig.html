@@ -1,0 +1,69 @@
+{% extends template %}
+
+{% block body %}
+<div class="row">
+    <div class="col-sm-2" >
+        <h4>Catalog</h4>
+        <ul class="nav">
+        {% for category in data.categories %}
+            <li class="nav-item">
+                <a href="{{ category.name|lower }}" class="nav-link"
+                    {% if category.id == data.requestedCategoryId %}
+                        style="color: green" 
+                    {% endif %} >
+                    {{ category.name }}</a>
+            </li>
+        {% endfor %}    
+        </ul>
+    </div>
+
+    <div class="col-sm-8 padding-right">
+        <div class="features_items">
+            <h2 class="title text-center">Cart</h2>
+
+            {% if data.result %}
+                <p>Order is processed. We will call you back.</p>
+            {% else %}
+
+                <p>Selected products: {{ data.totalQuantity}}, total price: {{ data.totalPrice }}, $</p><br/>
+
+                {% if not data.result %}
+
+                    <div class="col-sm-4">
+                        {% if data.errors and data.errors is iterable %}
+                            <ul>
+                                {% for error in data.errors %}
+                                    <li> - {{ error }} ?></li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+
+                        <p>To place an order fill out the form. Our manager will contact you.</p>
+
+                        <div class="login-form">
+                            <form action="#" method="POST">
+
+                                <p>Your name</p>
+                                <input type="text" name="userName" placeholder="" value="{{ data.userName }}"/>
+
+                                <p>Your email</p>
+                                <input type="text" name="userEmail" placeholder="" value="{{ data.userEmail }}"/>
+
+                                <p>Phone number</p>
+                                <input type="text" name="userPhone" placeholder="" value="{{ data.phoneNumber }}"/>
+
+                                <br/>
+                                <br/>
+                                <input type="submit" name="submit" class="btn btn-success" value="Checkout" />
+                            </form>
+                        </div>
+                    </div>
+
+                {% endif %}                       
+                
+            {% endif %} 
+
+        </div>
+    </div>
+</div>
+{% endblock %}

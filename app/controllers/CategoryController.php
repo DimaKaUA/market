@@ -1,6 +1,7 @@
 <?php 
 
 include_once ROOT . '/models/Category.php';
+include_once ROOT . '/controllers/AuthController.php';
 
 class CategoryController extends Controller {
 
@@ -16,6 +17,9 @@ class CategoryController extends Controller {
      */
     public function indexAction()
     {
+
+        AuthController::checkAuth();
+
         $categoryModel = new Category();
         $allCategories = $categoryModel->getList();
         
@@ -30,6 +34,9 @@ class CategoryController extends Controller {
      */
     public function showAction($id)
     {
+
+        AuthController::checkAuth();
+
         if ($id) {
             $categoryModel = new Category();
             $category = $categoryModel->getRecordById($id);
@@ -47,6 +54,9 @@ class CategoryController extends Controller {
      */
     public function newAction()
     {
+
+        AuthController::checkAuth();
+
         $this->view->generate('categories/new_view.twig.html');
         return true;
     }
@@ -58,6 +68,9 @@ class CategoryController extends Controller {
      */
     public function editAction($id)
     {
+
+        AuthController::checkAuth();
+
         if ($id) {
             $categoryModel = new Category();
             $category = $categoryModel->getRecordById($id);
@@ -77,6 +90,9 @@ class CategoryController extends Controller {
      */
     public function createAction()
     {
+
+        AuthController::checkAuth();
+
         if($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             if (isset($_POST['name']) 
@@ -117,6 +133,9 @@ class CategoryController extends Controller {
      */
     public function updateAction($id)
     {
+
+        AuthController::checkAuth();
+
         if($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             if (isset($_POST['name']) 
@@ -162,6 +181,9 @@ class CategoryController extends Controller {
      */
     public function destroyAction($id)
     {
+
+        AuthController::checkAuth();
+
         if ($id) {
             $categoryModel = new Category();
             $categoryModel->deleteRecord($id);

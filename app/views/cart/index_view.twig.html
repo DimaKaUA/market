@@ -1,0 +1,71 @@
+{% extends template %}
+
+{% block body %}
+<div class="row">
+    <div class="col-sm-2" >
+        <h4>Catalog</h4>
+        <ul class="nav">
+        {% for category in data.categories %}
+            <li class="nav-item">
+                <a href="{{ category.name|lower }}" class="nav-link"
+                    {% if category.id == data.requestedCategoryId %}
+                        style="color: green" 
+                    {% endif %} >
+                    {{ category.name }}</a>
+            </li>
+        {% endfor %}    
+        </ul>
+    </div>
+
+    <div class="col-sm-8 padding-right">
+        <div class="features_items">
+            <h2 class="title text-center">Cart</h2>
+
+            {% if data.itemsInCart %}
+                
+                <p>You added the next items:</p>
+                <table class="table-bordered table-striped table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Price, $</th>
+                            <th>Quantity, pc</th>
+                            <th>Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for item in data.items %}
+                        <tr>
+                            <td>
+                                <a href="/items/{{ item.id }}">
+                                    {{ item['name'] }}
+                                </a>
+                            </td>
+                            <td>{{ item['price'] }}</td>
+                            <td>{{ data.itemsInCart[item.id] }}</td>
+                            <td>
+                                <a class="btn btn-warning btn-xs" href="/cart/delete/{{ item.id }}">
+                                    Remove item
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                        <tr>
+                            <td colspan="4">Total price, $:</td>
+                            <td>{{ data.totalPrice }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <a class="btn btn-success checkout" href="/cart/checkout"> Оформить заказ</a>
+
+            {% else %}
+                <p>Cart is ampty</p>
+                <a class="btn btn-default checkout" href="/">Back to shopping</a>
+            {% endif %}
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}

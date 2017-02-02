@@ -104,8 +104,17 @@ class Cart
     {
         // Gets an array of IDs and the number of items in cart
         $itemsInCart = self::getitems();
+        
         // Remove from the array element with the specified id
-        unset($itemsInCart[$id]);
+        //unset($itemsInCart[$id]);
+
+        // Remove from the array only one element with the specified id
+        $itemsInCart[$id]--;
+
+        if ($itemsInCart[$id] <= 0) {
+            unset($itemsInCart[$id]);
+        }
+
         // Write an array of items from remote element in the session
         $_SESSION['items'] = $itemsInCart;
     }

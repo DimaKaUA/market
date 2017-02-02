@@ -3,8 +3,8 @@
 /**
 * 
 */
-class Item extends Model
-{
+class Item extends Model {
+  
     protected static $tablename = "items";
 
     /**
@@ -112,24 +112,24 @@ class Item extends Model
      * @param array $idsArray <p>Array with IDs</p>
      * @return array <p>Array with item list</p>
      */
-    public static function getListByIds($idsArray)
+    public function getListByIds($idsArray)
     {
         // Convert array to string for constructing statement in sql-query
         $idsString = implode(',', $idsArray);
-        // Query text to DB
-        $sql = $db->prepare(
-                             'SELECT *
-                              FROM ' . static::$tablename . 
-                             ' WHERE id IN (?)'
-                              );
 
-        $sql->execute([$idsString]);
+        // Query text to DB
+        $result = $this->db->query(
+                            "SELECT *
+                             FROM " . static::$tablename . 
+                            " WHERE id IN ($idsString)"
+                            );
 
         $list = array();
 
-        while($row = $sql->fetch()) {
+        while($row = $result->fetch()) {
             $list[] = $row;
         }
+
         return $list;
     }
 }

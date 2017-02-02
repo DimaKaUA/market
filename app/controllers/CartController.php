@@ -2,6 +2,7 @@
 
 include_once ROOT . '/models/Item.php';
 include_once ROOT . '/models/Category.php';
+include_once ROOT . '/models/Order.php';
 include_once ROOT . '/libs/Cart.php';
 
 /**
@@ -24,16 +25,6 @@ class CartController extends Controller {
         header("Location: $referrer");
         exit;
     }
-    /**
-     * Adds an item to the cart using the asynchronous request (ajax)
-     * @param integer $id <p>item id</p>
-     */
-    public function addAjaxAction($id)
-    {
-        // Add the item to cart and print the result: the number of items in cart
-        Cart::addItem($id);
-        return true;
-    }
     
     /**
      * Deletes an item from the basket by synchronous request
@@ -52,6 +43,8 @@ class CartController extends Controller {
      */
     public function indexAction()
     {
+        $items = null;
+        $totalPrice = null;
         // Categories list for the left menu
         $categoryModel = new Category();
         $categories = $categoryModel->getList();
@@ -67,11 +60,12 @@ class CartController extends Controller {
             // Get the total value of items
             $totalPrice = Cart::getTotalPrice($items);
         }
-        
+
         $this->view->generate('cart/index_view.twig.html', [
-                'categories' => $categories,
-                'items'      => $items,
-                'totalPrice' => $totalPrice,
+                'categories'  => $categories,
+                'items'       => $items,
+                'totalPrice'  => $totalPrice,
+                'itemsInCart' => $itemsInCart,
         ]);
 
         return true;
@@ -81,6 +75,9 @@ class CartController extends Controller {
      */
     public function checkoutAction()
     {   
+        // error flag
+        $errors = false;
+
         // Gets data from cart  
         $itemsInCart = Cart::getItems();
         // If no items, send users to search for items in the home
@@ -89,56 +86,59 @@ class CartController extends Controller {
             exit;
         }
         // Categories list for the left menu
-        $categories = Category::getCategoriesList();
+        $categoryModel = new Category();
+        $categories = $categoryModel->getList();
         // Find the total cost
         $itemsIds = array_keys($itemsInCart);
-        $items = Item::getItemsByIds($itemsIds);
+        $itemModel = new Item();
+        $items = $itemModel->getListByIds($itemsIds);
         $totalPrice = Cart::getTotalPrice($items);
         // Number of items
         $totalQuantity = Cart::countItems();
         // The fields for the form
         $userName = false;
+        $userEmail = false;
         $userPhone = false;
-        $userComment = false;
         // Status successful checkout
         $result = false;
-        // Check whether the guest user
-        if (!User::isGuest()) {
-            // If the user is not a guest
-            // get information about the user from the database
-            $userId = User::checkLogged();
-            $user = User::getUserById($userId);
-            $userName = $user['name'];
-        } else {
-            // If the guest, the form fields remain empty
-            $userId = false;
-        }
         // Processing forms
         if (isset($_POST['submit'])) {
             // If the form is submitted
             // get the data from the form
             $userName = $_POST['userName'];
+            $userEmail = $_POST['userEmail'];
             $userPhone = $_POST['userPhone'];
-            $userComment = $_POST['userComment'];
-            // error flag
-            $errors = false;
+            
             // Validation of fields
-            if (!User::checkName($userName)) {
+            if (!self::checkName($userName)) {
                 $errors[] = 'Wrong name';
             }
-            if (!User::checkPhone($userPhone)) {
+            if (!self::checkEmail($userEmail)) {
+                $errors[] = 'Wrong email';
+            }
+            if (!self::checkPhone($userPhone)) {
                 $errors[] = 'Wrong phone';
             }
             if ($errors == false) {
+                // Preparing arguments for Order model
+                $args = array(
+                            'user_name'   => $userName,
+                            'user_email'  => $userEmail,
+                            'user_phone'  => $userPhone,
+                            'status'      => 1,
+                            'items'       => serialize($itemsInCart),
+                            'total_price' => $totalPrice,
+                             );
                 // If there are no errors
                 // Save the order in database
-                $result = Order::save($userName, $userPhone, $userComment, $userId, $itemsInCart);
+                $orderModel = new Order();
+                $result = $orderModel->addRecord($args);
                 if ($result) {
                     // If the order is successfully saved
                     // Notify the administrator about the new order by mail              
-                    $adminEmail = 'php.start@mail.ru';
-                    $message = '<a href="http://digital-mafia.net/admin/orders">Список заказов</a>';
-                    $subject = 'Новый заказ!';
+                    $adminEmail = 'email@gmail.com';
+                    $message = '<a href="http://localhost/orders">Order list</a>';
+                    $subject = 'New order!';
                     mail($adminEmail, $subject, $message);
                     // Clear the cart
                     Cart::clear();
@@ -146,11 +146,55 @@ class CartController extends Controller {
             }
         }
 
-        $this->view->generate('cart/index_view.twig.html', [
-                'categories' => $categories,
-                'items'      => $items,
-                'totalPrice' => $totalPrice,
+        $this->view->generate('cart/checkout_view.twig.html', [
+                'categories'    => $categories,
+                'items'         => $items,
+                'totalPrice'    => $totalPrice,
+                'result'        => $result,
+                'totalQuantity' => $totalQuantity,
+                'errors'        => $errors, 
+                'userName'      => $userName,
+                'userEmail'     => $userEmail,
+                'userPhone'     => $userPhone,
         ]);
         return true;
+    }
+
+    /**
+     * Checks name: more than 2 chars
+     * @param string $name <p>Name</p>
+     * @return boolean <p>Result of performing of method</p>
+     */
+    public static function checkName($name)
+    {
+        if (strlen($name) >= 2) {
+            return true;
+        }
+        return false;
+    }
+    /**
+     * Checks phone: more than 10 chars
+     * @param string $phone <p>Phone</p>
+     * @return boolean <p>Result of performing of method</p>
+     */
+    public static function checkPhone($phone)
+    {
+        if (strlen($phone) >= 10) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Check email
+     * @param string $email <p>E-mail</p>
+     * @return boolean <p>Result of performing of method</p>
+     */
+    public static function checkEmail($email)
+    {
+        if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            return true;
+        }
+        return false;
     }
 }

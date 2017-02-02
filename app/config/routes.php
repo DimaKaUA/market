@@ -1,6 +1,8 @@
 <?php 
 
 return array(
+
+    // Categories CRUD:
     'categories/([0-9]+)/edit'    => 'category/edit/$1',
     'categories/([0-9]+)/update'  => 'category/update/$1',
     'categories/([0-9]+)/destroy' => 'category/destroy/$1',
@@ -9,6 +11,7 @@ return array(
     'categories/create'           => 'category/create',
     'categories'                  => 'category/index',
 
+    // Items CRUD:
     'items/([0-9]+)/edit'         => 'item/edit/$1',
     'items/([0-9]+)/update'       => 'item/update/$1',
     'items/([0-9]+)/destroy'      => 'item/destroy/$1',
@@ -17,15 +20,24 @@ return array(
     'items/create'                => 'item/create',
     'items'                       => 'item/index',
 
-    // Cart:
-    'cart/checkout'               => 'cart/checkout', // actionAdd в CartController    
-    'cart/delete/([0-9]+)'        => 'cart/delete/$1', // actionDelete в CartController    
-    'cart/add/([0-9]+)'           => 'cart/add/$1', // actionAdd в CartController    
-    'cart/addAjax/([0-9]+)'       => 'cart/addAjax/$1', // actionAddAjax в CartController
-    'cart'                        => 'cart/index', // actionIndex в CartController
+    // Orders CRUD:
+    'orders/([0-9]+)/edit'         => 'order/edit/$1',
+    'orders/([0-9]+)/update'       => 'order/update/$1',
+    'orders/([0-9]+)/destroy'      => 'order/destroy/$1',
+    'orders/([0-9]+)'              => 'order/show/$1',
+    'orders/new'                   => 'order/new',
+    'orders/create'                => 'order/create',
+    'orders'                       => 'order/index',
 
-    'not-found'                   => 'error/index',
+    // Cart:
+    'cart/checkout'               => 'cart/checkout', // checkoutAction to CartController    
+    'cart/delete/([0-9]+)'        => 'cart/delete/$1', // deleteAction to CartController    
+    'cart/add/([0-9]+)'           => 'cart/add/$1', // addAction to CartController    
+    'cart'                        => 'cart/index', // indexAction to CartController
+
+    'not-found'                   => 'error/index', // indexAction to ErrorController
     
+    // Catalog. Shopping
     '([a-zA-Z]+)'                 => 'main/catalog/$1',
 
     ''                            => 'main/index',
