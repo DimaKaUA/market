@@ -4,11 +4,6 @@ include_once ROOT . '/models/Item.php';
 include_once ROOT . '/models/Category.php';
 
 class MainController extends Controller {
-
-    public function __construct()
-    {
-        $this->view = new View();
-    }
     
     /**
      * Displays main page of site with all categories
@@ -19,7 +14,7 @@ class MainController extends Controller {
     {
         $categoryModel = new Category();
         $categories = $categoryModel->getList();
-
+        
         $this->view->generate('main/index_view.twig.html', $categories);
 
         return true;

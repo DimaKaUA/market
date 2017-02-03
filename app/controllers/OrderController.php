@@ -9,11 +9,6 @@ include_once ROOT . '/controllers/AuthController.php';
  * Class OrderController
  */
 class OrderController extends Controller {
-
-    public function __construct()
-    {
-        $this->view = new View();
-    }
     
     /**
      * Displays a listing of the orders

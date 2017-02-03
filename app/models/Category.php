@@ -4,6 +4,7 @@
 * 
 */
 class Category extends Model {
+    
     protected static $tablename = "categories";
 
     /**

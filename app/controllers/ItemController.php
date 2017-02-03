@@ -8,11 +8,6 @@ include_once ROOT . '/controllers/AuthController.php';
  * Class ItemController
  */
 class ItemController extends Controller {
-
-    public function __construct()
-    {
-        $this->view = new View();
-    }
     
     /**
      * Displays a listing of the items
